@@ -1,34 +1,43 @@
-import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString, Length, MinLength } from "class-validator";
+import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
 import { UserEntityProps } from "../entities/user.entity";
 import { ClassValidatorFields } from "@/shared/domain/validator/class-validator-fields";
 
 class UserRules {
+  @MaxLength(255)
   @IsString()
   @IsNotEmpty()
-  @Length(3, 255)
   name: string;
 
+  @MaxLength(255)
+  @IsString()
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
+  @MaxLength(100)
   @IsString()
   @IsNotEmpty()
-  @MinLength(8)
   password: string;
 
   @IsDate()
   @IsOptional()
   createdAt: Date;
 
-  constructor({name, email, password, createdAt}: UserEntityProps) {
-    Object.assign(this, { name, email, password, createdAt });
+  constructor(data: UserEntityProps | null) {
+    if (data) {
+      Object.assign(this, data);
+    }
   }
 }
 
-export class UserValidator extends ClassValidatorFields<UserRules> {
+export class UserValidator extends ClassValidatorFields<UserEntityProps> {
   validate(data: UserEntityProps): boolean {
-    return super.validate(new UserRules(data));
+    const rules = new UserRules(data);
+    const isValid = super.validate(rules);
+    if (isValid) {
+      this.validatedData = data;
+    }
+    return isValid;
   }
 }
 

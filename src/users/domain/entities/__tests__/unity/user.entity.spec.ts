@@ -5,10 +5,12 @@ describe('UserEntity unit tests', () => {
   let props: UserEntityProps;
 
   beforeEach(() => {
+    UserEntity.validate = jest.fn();
     props = userDataBuilder({});  
     sut = new UserEntity(props);
   });
   it('Constructor method', () => {
+    expect(UserEntity.validate).toHaveBeenCalledWith(props);
     expect(sut.props).toEqual(props);
     expect(sut.props.createdAt).toBeInstanceOf(Date);
     expect(sut.props.name).toEqual(props.name);
@@ -52,10 +54,12 @@ describe('UserEntity unit tests', () => {
   it('update method', () => {
     sut.update('test');
     expect(sut.props.name).toEqual('test');
+    expect(UserEntity.validate).toHaveBeenCalledWith({ ...props, name: 'test' });
   });
 
   it('updatePassword method', () => {
     sut.updatePassword('test');
     expect(sut.props.password).toEqual('test');
+    expect(UserEntity.validate).toHaveBeenCalledWith({ ...props, password: 'test' });
   });
 });
