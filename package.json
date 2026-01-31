@@ -26,6 +26,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-fastify": "^11.1.12",
+    "class-validator": "^0.14.3",
     "i": "^0.3.7",
     "nest": "^0.1.6",
     "reflect-metadata": "^0.2.2",
