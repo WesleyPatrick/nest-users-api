@@ -3,9 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { EnvConfigModule } from './shared/infraestructure/env-config/env-config.module';
-
+import { UsersModule } from './users/infra/dto/users.module';
 @Module({
-  imports: [EnvConfigModule],
+  imports: [EnvConfigModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
