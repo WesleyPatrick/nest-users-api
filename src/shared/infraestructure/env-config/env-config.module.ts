@@ -3,7 +3,9 @@ import { EnvConfigService } from './env-config.service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule.forRoot({
+    isGlobal: true,
+  })],
   providers: [EnvConfigService],
   exports: [EnvConfigService],
 })
