@@ -31,7 +31,11 @@ export class SearchParams {
   }
 
   private set page(value: number) {
-    this._page = value;
+    let _page = +value;
+    if (_page <= 0 || isNaN(_page) || _page > 100 || typeof _page !== 'number') {
+      _page = 1;
+    }
+    this._page = _page;
   }
 
   get perPage(): number {
@@ -39,7 +43,11 @@ export class SearchParams {
   }
 
   private set perPage(value: number) {
-    this._perPage = value;
+    let _perPage = +value;
+    if (_perPage <= 0 || isNaN(_perPage) || _perPage > 100 || typeof _perPage !== 'number') {
+      _perPage = 15;
+    }
+    this._perPage = _perPage;
   }
 
   get sort(): string | null {
@@ -47,7 +55,7 @@ export class SearchParams {
   }
 
   private set sort(value: string | null) {
-    this._sort = value;
+    this._sort = value === null || value === undefined || value === '' ? null : String(value);
   }
 
   get sortDir(): SortDirection | null {
@@ -55,7 +63,18 @@ export class SearchParams {
   }
 
   private set sortDir(value: SortDirection | null) {
-    this._sortDir = value;
+   if (!this.sort){
+    this._sortDir = null;
+    return;
+   }
+
+   const dir = String(value).toLowerCase() as SortDirection;
+   if (dir !== 'asc' && dir !== 'desc') {
+    this._sortDir = 'desc';
+    return;
+   }
+
+   this._sortDir = dir;
   }
 
   get filter(): string | null {
@@ -63,7 +82,7 @@ export class SearchParams {
   }
 
   private set filter(value: string | null) {
-    this._filter = value;
+    this._filter = value === null || value === undefined || value === '' ? null : String(value);
   }
 }
 
